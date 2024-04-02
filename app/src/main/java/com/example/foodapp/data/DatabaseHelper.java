@@ -1,5 +1,6 @@
 package com.example.foodapp.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_USER_ID = "user_id";
     private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_USERACCNAME = "useraccname";
+
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
     private static final String AVATAR_IMAGE = "avatar_image";
@@ -49,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_USERNAME + " TEXT,"
+            + COLUMN_USERACCNAME + " TEXT,"
             + COLUMN_EMAIL + " TEXT,"
             + COLUMN_PASSWORD + " TEXT,"
             + AVATAR_IMAGE + " TEXT,"
@@ -109,13 +113,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_COMMENTS);
 
         // Thêm dữ liệu mẫu vào bảng người dùng
-        db.execSQL("INSERT INTO " + TABLE_USERS + "(" + COLUMN_USERNAME + ", " + COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ", " + AVATAR_IMAGE + ", " + COVER_IMAGE + ", " + COLUMN_IS_ADMIN + ") VALUES ('user1', 'user1@example.com', 'password1', 'https://cdn.alongwalk.info/vn/wp-content/uploads/2022/10/14054048/image-100-y-tuong-avatar-cute-doc-dao-an-tuong-nhat-cho-ban-166567564813495.jpg', 'cover_url_1', 0)");
-        db.execSQL("INSERT INTO " + TABLE_USERS + "(" + COLUMN_USERNAME + ", " + COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ", " + AVATAR_IMAGE + ", " + COVER_IMAGE + ", " + COLUMN_IS_ADMIN + ") VALUES ('user2', 'user2@example.com', 'password2', 'https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/tin-tuc/175607/Originals/avt-cho-cute%20(39).jpg', 'cover_url_2', 0)");
+        db.execSQL("INSERT INTO " + TABLE_USERS + "(" + COLUMN_USERNAME + ", " + COLUMN_USERACCNAME + ", " + COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ", " + AVATAR_IMAGE + ", " + COVER_IMAGE + ", " + COLUMN_IS_ADMIN + ") VALUES ('chinhuy','user1', 'user1@example.com', 'password1', 'https://cdn.alongwalk.info/vn/wp-content/uploads/2022/10/14054048/image-100-y-tuong-avatar-cute-doc-dao-an-tuong-nhat-cho-ban-166567564813495.jpg', 'cover_url_1', 0)");
+        db.execSQL("INSERT INTO " + TABLE_USERS + "(" + COLUMN_USERNAME + ", " + COLUMN_USERACCNAME + ",  " + COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ", " + AVATAR_IMAGE + ", " + COVER_IMAGE + ", " + COLUMN_IS_ADMIN + ") VALUES ('yongjun','user2', 'user2@example.com', 'password2', 'https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/tin-tuc/175607/Originals/avt-cho-cute%20(39).jpg', 'cover_url_2', 0)");
 
         // Thêm dữ liệu mẫu vào bảng bài viết
         db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + COLUMN_POST_CONTENT + ") VALUES (1, 1, '1user1의 게시물 1 내용')");
-        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + COLUMN_POST_CONTENT + ") VALUES (1, 1, '2user1의 게시물 2 내용')");
-        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + COLUMN_POST_CONTENT + ") VALUES (1, 2, '3user2의 게시물 1 내용'+'\n'+'맛있는 음식')");
+        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + COLUMN_POST_CONTENT + ") VALUES (1, 1, '2user1의 게시물 2 내용ádlajsdjaspdjpaspajpoadposaposadsaasdokaso kádosa sakdpokspakdkj jdiasjdpsa[dskaokd sjdpas')");
+        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + COLUMN_POST_CONTENT + ") VALUES (1, 2, '3user2의 게시물 1 내용.\n"+"\n"+"ㅁㄴㅇㅁㄴㅇㅁ')");
         db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + COLUMN_POST_CONTENT + ") VALUES (1, 2, '4Nội dung bài viết 2 của user2')");
 
         // Thêm dữ liệu mẫu vào bảng ảnh
@@ -138,6 +142,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Thêm các bảng cần thiết khác nếu cần
         onCreate(db);
     }
+    public void insertUser(String username, String userAccName, String email, String password, String avatarImage, String coverImage, int isAdmin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_USERACCNAME, userAccName);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PASSWORD, password);
+        values.put(AVATAR_IMAGE, avatarImage);
+        values.put(COVER_IMAGE, coverImage);
+        values.put(COLUMN_IS_ADMIN, isAdmin);
+        db.insert(TABLE_USERS, null, values);
+        db.close();
+    }
+    public boolean isUsernameExists(String userAccname) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_USERACCNAME + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{userAccname});
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
+    }
+
     public List<Post> getAllPosts() {
         List<Post> posts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
