@@ -14,8 +14,11 @@
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
 
-
+<!--        로그인 및 가입 페이지를 테스트하려면 이 코드 부분을 주석 처리하고 아래의 코드 부분을 주석 해제하세요-->
+<!--        ctrl+ /    -->
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".Content" />
+        <activity android:name=".SignUpActivity" />
 
         <activity
             android:name=".MainActivity"
@@ -30,6 +33,30 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+
+<!--        LoginActivity 완료한 후에는 '로그인' 버튼을 클릭하여 메인 화면으로 이동할 수 있습니다-->
+
+<!--        <activity android:name=".LoginActivity"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+<!--        <activity android:name=".Content" />-->
+<!--        <activity android:name=".SignUpActivity" />-->
+
+<!--        <activity-->
+<!--            android:name=".MainActivity">-->
+<!--            <meta-data-->
+<!--                android:name="android.app.lib_name"-->
+<!--                android:value="" />-->
+<!--        </activity>-->
+
+
+
     </application>
 
 </manifest>
