@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //ẩn nút back
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         viewPager.setAdapter(adapter);
+
 
         int[] tabIcons = {R.drawable.ic_home, R.drawable.bangtin, R.drawable.ic_search, R.drawable.ic_notification, R.drawable.ic_taikhoan};
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
