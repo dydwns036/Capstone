@@ -16,11 +16,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class adapterPostMenu3 extends RecyclerView.Adapter<adapterPostMenu3.ViewHolder> {
+public class adapterPostMenu2 extends RecyclerView.Adapter<adapterPostMenu2.ViewHolder> {
 private List<Post> posts;
 private Context context;
-
-public adapterPostMenu3(Context context, List<Post> posts) {
+private final int MAX_LINES = 2;
+public adapterPostMenu2(Context context, List<Post> posts) {
         this.context = context;
         this.posts = posts;
         }
@@ -40,6 +40,7 @@ public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textViewContent.setText(post.getContent());
         // Load ảnh avatar và ảnh bài đăng nếu cần
         // Picasso.with(context).load(post.getAvatarUrl()).into(holder.imageViewAvatar);
+        Picasso.get().load(post.getAvatarUrl()).into(holder.imageViewAvatar);
     // Kiểm tra xem bài đăng có ảnh hay không
     List<String> imageUrls = post.getImageUrls();
     if (post.getImageUrls() != null && !post.getImageUrls().isEmpty()) {
