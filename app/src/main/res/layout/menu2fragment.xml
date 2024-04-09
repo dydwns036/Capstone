@@ -1,11 +1,46 @@
-<!-- menu2fragment.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ListView
-        android:id="@+id/listviewNew"
+    android:layout_height="match_parent"
+    android:id="@+id/menu2fragment">
+    <RelativeLayout
+        android:id="@+id/topRelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:background="#F5F5FF">
+        <ImageView
+            android:id="@+id/imageViewMyAvt"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_border2"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true">
+        </ImageView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/imageViewMyAvt"
+            android:layout_toLeftOf="@id/imageViewAddPost"
+            android:layout_marginVertical="12dp"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/custom_border2"
+            android:text="Share with friends"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"></TextView>
+        <ImageView
+            android:id="@+id/imageViewAddPost"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_post"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"></ImageView>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topRelativeLayout"/>
+
 </RelativeLayout>
