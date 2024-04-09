@@ -29,6 +29,7 @@
         <EditText
             android:id="@+id/taikhoan"
             android:drawableLeft="@drawable/ic_taikhoan"
+            android:singleLine="true"
             android:hint="  type your username"
             android:layout_width="match_parent"
             android:layout_height="60dp"></EditText>
@@ -43,11 +44,12 @@
             android:inputType="textPassword"
             android:id="@+id/matkhau"
             android:drawableLeft="@drawable/ic_matkhau"
+            android:singleLine="true"
             android:hint="  type your password"
             android:layout_width="match_parent"
             android:layout_height="60dp"></EditText>
         <TextView
-            android:id="@+id/forgotPasswordTextView"
+            android:id="@+id/findPasswordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot your password?"
@@ -58,14 +60,16 @@
             android:onClick="onForgotPasswordClicked" />
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/loginbutton"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:text="login"
+        android:gravity="center"
+        android:text="LOG IN"
+        android:textSize="18sp"
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:background="@drawable/rounded_button_gradient"></Button>
+        android:background="@drawable/rounded_button_gradient"></TextView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
