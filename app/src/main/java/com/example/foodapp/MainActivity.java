@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //ẩn nút back
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -40,11 +40,34 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
 
+
         int[] tabIcons = {R.drawable.ic_home, R.drawable.bangtin, R.drawable.ic_search, R.drawable.ic_notification, R.drawable.ic_taikhoan};
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             // Xác định hình ảnh cho tab dựa trên vị trí
             tab.setIcon(tabIcons[position]);
         }).attach();
+
+
+
+        // Thiết lập bộ lắng nghe cho sự kiện khi người dùng chọn tab
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Lấy vị trí của tab được chọn
+                int position = tab.getPosition();
+                // Di chuyển viewPager đến tab tương ứng
+                viewPager.setCurrentItem(position, true);
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Không cần xử lý khi tab bị bỏ chọn
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Không cần xử lý khi tab được chọn lại
+            }
+        });
     }
 
 }
