@@ -1,57 +1,69 @@
 package com.example.foodapp;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.adapter.adapterPostMenu3;
-import com.example.foodapp.data.DatabaseHelper;
-import com.example.foodapp.model.Post;
+//import com.example.foodapp.adapter.adapterPost;
+//import com.example.foodapp.data.DatabaseAll;
+//import com.example.foodapp.model.Truyen;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Menu3Fragment extends Fragment {
-    private RecyclerView recyclerView;
-    private adapterPostMenu3 adapter;
-    private List<Post> postList;
-    private DatabaseHelper databaseHelper;
-
+//    adapterPost adaptertruyen;
+//    ListView listViewNew;
+//    ArrayList<Truyen> TruyenArrayList;
+//    DatabaseAll databaseDocTruyen;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.menu3fragment, container, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
-
-        // Sử dụng context của activity hoặc activity gốc
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        postList = new ArrayList<>();
-
-        // Sử dụng context của activity hoặc activity gốc
-        adapter = new adapterPostMenu3(getActivity(), postList);
-        recyclerView.setAdapter(adapter);
-
-        // Sử dụng context của activity hoặc activity gốc
-        databaseHelper = new DatabaseHelper(getActivity());
-
-        retrievePostsFromDatabase();
-
+//        databaseDocTruyen = new DatabaseAll(requireContext());
+//
+//        Mapping(view);
+//        //listview Truyen
+//        listViewNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(requireActivity(), Content.class);
+//                String tent =   TruyenArrayList.get(position).getTenTruyen();
+//                String noidungt = TruyenArrayList.get(position).getNoiDung();
+//                intent.putExtra("postname",tent);
+//                intent.putExtra("content",noidungt);
+//                startActivity(intent);
+//            }
+//        });
         return view;
     }
+    private void Mapping(View view){
 
-    private void retrievePostsFromDatabase() {
-        postList.clear();
-        postList.addAll(databaseHelper.getAllPosts());
-        adapter.notifyDataSetChanged();
+//        listViewNew = view.findViewById(R.id.listviewNew);
+//
+//        //New Post
+//        TruyenArrayList = new ArrayList<>();
+//
+//        Cursor cursor1 = databaseDocTruyen.getData3();
+//        while (cursor1.moveToNext()){
+//            int id = cursor1.getInt(0);
+//            String postname = cursor1.getString(1);
+//            String content = cursor1.getString(2);
+//            String anh = cursor1.getString(3);
+//            int id_tk = cursor1.getInt(4);
+//            TruyenArrayList.add(new Truyen(id,postname,content,anh,id_tk));
+//        }
+//        cursor1.close();
+//
+//        adaptertruyen = new adapterPost(requireContext(), TruyenArrayList);
+//        listViewNew.setAdapter(adaptertruyen);
     }
 
 }
