@@ -14,22 +14,53 @@
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
 
+<!--        로그인 및 가입 페이지를 테스트하려면 이 코드 부분을 주석 처리하고 아래의 코드 부분을 주석 해제하세요-->
+<!--        ctrl+ /    -->
+<!--        <activity android:name=".LoginActivity"/>-->
+<!--        <activity android:name=".PostDetail" />-->
+<!--        <activity android:name=".SignUpActivity" />-->
+<!--        <activity android:name=".AddPostActivity"/>-->
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-        <activity android:name=".Content" />
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
 
-        <activity
-            android:name=".MainActivity"
+<!--            <meta-data-->
+<!--                android:name="android.app.lib_name"-->
+<!--                android:value="" />-->
+<!--        </activity>-->
+
+
+
+        <activity android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+        </activity>
+        <activity android:name=".PostDetail" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".AddPostActivity"/>
+        <activity android:name=".Menu1Fragment"/>
+        <activity android:name=".Menu5Fragment"/>
+        <activity android:name=".Menu2Fragment"/>
+        <activity android:name=".Menu3Fragment"/>
+        <activity android:name=".Menu4Fragment"/>
+        <activity
+            android:name=".MainActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+
+
     </application>
 
 </manifest>
