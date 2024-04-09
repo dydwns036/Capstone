@@ -1,92 +1,79 @@
-package com.example.foodapp.adapter;
+package com.example.foodapp;
 
-import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodapp.PostDetail;
 import com.example.foodapp.R;
+import com.example.foodapp.adapter.adapterPostMenu2;
+import com.example.foodapp.data.DatabaseHelper;
 import com.example.foodapp.model.Post;
-import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class adapterPostMenu2 extends RecyclerView.Adapter<adapterPostMenu2.ViewHolder> {
-    private List<Post> posts;
-    private Context context;
-    private OnPostClickListener onPostClickListener; // Interface
-
-    public interface OnPostClickListener {
-        void onPostClick(int position);
-    }
-
-    public adapterPostMenu2(Context context, List<Post> posts, OnPostClickListener listener) {
-        this.context = context;
-        this.posts = posts;
-        this.onPostClickListener = listener;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post, parent, false);
-        return new ViewHolder(view);
-    }
+public class Menu2Fragment extends Fragment implements adapterPostMenu2.OnPostClickListener {
+    private RecyclerView recyclerView;
+    private adapterPostMenu2 adapter;
+    private List<Post> postList;
+    private DatabaseHelper databaseHelper;
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Post post = posts.get(position);
-        holder.textViewUsername.setText(post.getUsername());
-        holder.textViewDateTime.setText(post.getDate());
-        holder.textViewTitle.setText(post.getTitle());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.menu2fragment, container, false);
 
-        holder.txtRecipe.setVisibility(post.getIsRecipe() == 1 ? View.VISIBLE : View.GONE);
 
-        Picasso.get().load(post.getAvatarUrl()).into(holder.imageViewAvatar);
-
-        if (!post.getImageUrls().isEmpty()) {
-            String imageUrl = post.getImageUrls().get(0); // Lấy URL ảnh đầu tiên trong danh sách
-            Picasso.get().load(imageUrl).into(holder.imageViewPost);
-            holder.imageViewPost.setVisibility(View.VISIBLE);
-        } else {
-            // Nếu không có ảnh, ẩn ImageView
-            holder.imageViewPost.setVisibility(View.GONE);
-        }
-        int currentPosition = position;
-        // Gán sự kiện onClickListener cho itemView
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout topRelativeLayout = view.findViewById(R.id.topRelativeLayout);
+        topRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onPostClickListener != null) {
-                    onPostClickListener.onPostClick(currentPosition);    // Gọi phương thức trong interface
-                }
+                Intent intent = new Intent(getActivity(), AddPostActivity.class);
+                startActivity(intent);
             }
         });
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        postList = new ArrayList<>();
+        adapter = new adapterPostMenu2(getActivity(), postList, this); // Gán listener
+        recyclerView.setAdapter(adapter);
+
+        databaseHelper = new DatabaseHelper(getActivity());
+        retrievePostsFromDatabase();
+
+        return view;
+    }
+    public void onResume() {
+        super.onResume();
+        retrievePostsFromDatabase();
     }
 
+    private void retrievePostsFromDatabase() {
+        postList.clear();
+        postList.addAll(databaseHelper.getAllPosts());
+        adapter.notifyDataSetChanged();
+    }
+
+    // Phương thức trong interface OnPostClickListener
     @Override
-    public int getItemCount() {
-        return posts.size();
+    public void onPostClick(int position) {
+        // Lấy đối tượng Post tại vị trí được nhấn
+        Post clickedPost = postList.get(position);
+
+        // Gửi Intent đến PostDetail Activity và đính kèm đối tượng Post
+        Intent intent = new Intent(getActivity(), PostDetail.class);
+        intent.putExtra("POST_DETAIL", clickedPost);
+        startActivity(intent);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageViewAvatar;
-        TextView textViewUsername, textViewDateTime, textViewTitle, txtRecipe;
-        ImageView imageViewPost;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageViewAvatar = itemView.findViewById(R.id.imageViewAvatar);
-            textViewUsername = itemView.findViewById(R.id.textViewUsername);
-            textViewDateTime = itemView.findViewById(R.id.textViewDateTime);
-            textViewTitle = itemView.findViewById(R.id.textViewTitle);
-            imageViewPost = itemView.findViewById(R.id.imageViewPost);
-            txtRecipe = itemView.findViewById(R.id.txtRecipe);
-        }
-    }
 }
