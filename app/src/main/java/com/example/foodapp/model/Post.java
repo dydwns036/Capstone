@@ -1,22 +1,36 @@
 package com.example.foodapp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Post {
+public class Post implements Serializable {
+    private int id;
     private String avatarUrl;
     private String username;
     private String date;
+    private String title;
     private String content;
     private List<String> imageUrls;
+    private int isRecipe;
 
-    public Post(String avatarUrl, String username, String date, String content, List<String> imageUrls) {
+    public Post(int id, String avatarUrl, String username, String date, String title, String content, List<String> imageUrls, int isRecipe) {
+        this.id = id;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.date = date;
+        this.title = title;
         this.content = content;
         this.imageUrls = imageUrls;
+        this.isRecipe = isRecipe;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;
@@ -42,6 +56,14 @@ public class Post {
         this.date = date;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getContent() {
         return content;
     }
@@ -56,5 +78,13 @@ public class Post {
 
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
+    }
+
+    public int getIsRecipe() {
+        return isRecipe;
+    }
+
+    public void setIsRecipe(int isRecipe) {
+        this.isRecipe = isRecipe;
     }
 }
