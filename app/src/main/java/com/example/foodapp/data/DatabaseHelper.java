@@ -228,52 +228,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_PHOTOS, COLUMN_POST_ID + " = ?", new String[]{String.valueOf(postId)});
         db.close();
     }
-//    public User getUserById(int userId) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query(TABLE_USERS,
-//                new String[]{COLUMN_USER_ID, COLUMN_USERNAME, COLUMN_USERACCNAME, COLUMN_EMAIL, AVATAR_IMAGE, COVER_IMAGE, COLUMN_IS_ADMIN},
-//                COLUMN_USER_ID + "=?",
-//                new String[]{String.valueOf(userId)},
-//                null, null, null, null);
-//
-//        User user = null;
-//        if (cursor != null && cursor.moveToFirst()) {
-//            String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
-//            String userAccname = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERACCNAME));
-//            String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
-//            String avatarImage = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
-//            String coverImage = cursor.getString(cursor.getColumnIndexOrThrow(COVER_IMAGE));
-//            int isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_ADMIN));
-////            user = new User(userId, username, userAccname, email, avatarImage, coverImage, isAdmin);
-//            cursor.close();
-//        }
-//        db.close();
-//        return user;
-//    }
 
-//    public User getUserByAccName(String userAccName) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        User user = null;
-//        Cursor cursor = db.query(TABLE_USERS,
-//                new String[]{COLUMN_USER_ID, COLUMN_USERNAME, COLUMN_EMAIL, AVATAR_IMAGE, COVER_IMAGE,COLUMN_IS_ADMIN},
-//                COLUMN_USERACCNAME + "=?",
-//                new String[]{userAccName},
-//                null, null, null);
-//        if (cursor != null) {
-//            if (cursor.moveToFirst()) {
-//                int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
-//                String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
-//                String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
-//                String avatarImage = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
-//                String coverImage = cursor.getString(cursor.getColumnIndexOrThrow(COVER_IMAGE));
-//                int isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_ADMIN));
-//                user = new User(userId, username,userAccName, email, avatarImage, coverImage,isAdmin);
-//            }
-//            cursor.close();
-//        }
-//        db.close();
-//        return user;
-//    }
+    public User getUserByUseraccname(String useraccname) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        User user = null;
+        Cursor cursor = db.query(TABLE_USERS, null, COLUMN_USERACCNAME + "=?", new String[]{useraccname}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
+            String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
+            String avatarImage = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+            String coverImage = cursor.getString(cursor.getColumnIndexOrThrow(COVER_IMAGE));
+            int isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_ADMIN));
+
+            // Khởi tạo đối tượng User từ dữ liệu lấy từ cơ sở dữ liệu
+            user = new User(userId, username, useraccname, email, password, avatarImage, coverImage, isAdmin);
+            cursor.close();
+        }
+        db.close();
+        return user;
+    }
+
+    // Method to get all posts by post_group
+    public List<Post> getPostsByGroupId(int groupId) {
+        List<Post> posts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + TABLE_USERS + "." + AVATAR_IMAGE + ", " + TABLE_POSTS + ".*, " + TABLE_USERS + "." + COLUMN_USERNAME + ", " + TABLE_POSTS + "." + COLUMN_CREATED_AT + ", " + TABLE_POSTS + "." + COLUMN_POST_TITLE + "," + COLUMN_POST_CONTENT + " FROM " + TABLE_POSTS + " JOIN " + TABLE_USERS + " ON " + TABLE_POSTS + "." + COLUMN_USER_ID + " = " + TABLE_USERS + "." + COLUMN_USER_ID + " WHERE " + TABLE_POSTS + "." + COLUMN_POST_GROUP + " = ?" + " ORDER BY " + TABLE_POSTS + "." + COLUMN_CREATED_AT + " DESC", new String[]{String.valueOf(groupId)});
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    // Lấy các thông tin cơ bản của bài đăng
+                    String avatarUrl = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+                    String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
+                    String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    // Lấy ID của bài đăng
+                    int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
+                    int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
+
+                    List<String> imageUrls = null;
+                    Post post = new Post(postId, avatarUrl, username, date, title, content, imageUrls, isRecipe);
+                    // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng hiện tại
+                    imageUrls = new ArrayList<>();
+
+                    // Truy vấn để lấy tất cả các URL hình ảnh từ bảng PHOTOS tương ứng với postId
+                    Cursor photoCursor = db.rawQuery("SELECT * FROM " + TABLE_PHOTOS + " WHERE " + COLUMN_POST_ID + " = ?", new String[]{String.valueOf(postId)});
+                    while (photoCursor.moveToNext()) {
+                        String imageUrl = photoCursor.getString(photoCursor.getColumnIndexOrThrow(COLUMN_IMAGE_URL));
+                        // Thêm URL hình ảnh vào danh sách
+                        imageUrls.add(imageUrl);
+                    }
+                    photoCursor.close();
+
+                    // Gán danh sách URL hình ảnh cho bài đăng
+                    post.setImageUrls(imageUrls);
+
+                    // Thêm đối tượng Post vào danh sách
+                    posts.add(post);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+        return posts;
+    }
+
     // get all post
     public List<Post> getAllPosts() {
         List<Post> posts = new ArrayList<>();
