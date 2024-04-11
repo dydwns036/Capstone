@@ -2,6 +2,7 @@ package com.example.foodapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodapp.data.DatabaseHelper;
+import com.example.foodapp.model.User;
 
 public class LoginActivity extends AppCompatActivity {
     TextView signUpTextView,findPassword,buttonLogin;
@@ -36,16 +38,23 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get username and password input
-                String username = editTextUsername.getText().toString().trim();
+                String useraccname = editTextUsername.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
 
                 // Check if username and password are not empty
-                if (!username.isEmpty() && !password.isEmpty()) {
+                if (!useraccname.isEmpty() && !password.isEmpty()) {
                     // Check if username and password are valid
-                    if (databaseHelper.checkUser(username, password)) {
+                    if (databaseHelper.checkUser(useraccname, password)) {
                         // Login successful
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        User user = databaseHelper.getUserByUseraccname(useraccname);
+                        if (user != null) {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("user", user);
+                            startActivity(intent);
+                        } else {
+                            Log.e("LoginActivity", "User not found for username: " + useraccname);
+                        }
                         finish();
                     } else {
                         // Login failed
