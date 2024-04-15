@@ -13,12 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodapp.model.CircleTransform;
 import com.example.foodapp.model.User;
 import com.squareup.picasso.Picasso;
 
 public class Menu5Fragment extends Fragment {
-    private TextView usernameTextView;
-    private TextView emailTextView;
+//    private TextView usernameTextView;
+//    private TextView emailTextView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,10 +38,20 @@ public class Menu5Fragment extends Fragment {
                 ImageView imgviewCover = view.findViewById(R.id.imgviewcoverimg);
                 usernameTextView.setText(user.getUsername());
                 emailTextView.setText(user.getEmail());
-                Picasso.get().load(user.getAvatarImage()).into(imgviewMyAvt);
-                Picasso.get().load(user.getCoverImage()).into(imgviewCover);
-                Log.e("Menu5Fragment", "Username: " + user.getUsername());
-                Log.e("Menu5Fragment", "Email: " + user.getEmail());
+                if (user != null && user.getAvatarImage() != null && !user.getAvatarImage().isEmpty()) {
+                    Picasso.get().load(user.getAvatarImage())
+                            .transform(new CircleTransform())
+                            .placeholder(R.drawable.custom_border2)
+                            .error(R.drawable.custom_border2)
+                            .into(imgviewMyAvt);
+                    Picasso.get().load(user.getCoverImage()).into(imgviewCover);
+                } else {
+                    // Nếu không có đường dẫn ảnh hoặc đường dẫn rỗng, hiển thị ảnh mặc định từ thư mục drawable
+                    imgviewMyAvt.setImageResource(R.drawable.user_icon2);
+                    imgviewCover.setImageResource(R.drawable.ic_bg);
+                }
+                Log.d("Menu5Fragment", "Username: " + user.getUsername());
+                Log.d("Menu5Fragment", "Email: " + user.getEmail());
             }
         }
 
@@ -48,7 +59,7 @@ public class Menu5Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Xử lý đăng xuất ở đây
-                // Ví dụ: Chuyển người dùng đến màn hình đăng nhập
+
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish(); // Đóng Activity hiện tại
