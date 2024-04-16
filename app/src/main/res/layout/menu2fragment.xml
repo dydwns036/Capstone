@@ -9,9 +9,17 @@
         android:layout_height="60dp"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp"
-        android:background="#F5F5FF">
+        android:background="#60F5F5FF">
         <ImageView
             android:id="@+id/imageViewMyAvt"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_border2"
+            android:scaleType="centerCrop"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true">
+        </ImageView>
+        <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/custom_border2"
@@ -36,6 +44,12 @@
             android:src="@drawable/ic_post"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"></ImageView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:elevation="8dp"
+            android:background="#80808080"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
