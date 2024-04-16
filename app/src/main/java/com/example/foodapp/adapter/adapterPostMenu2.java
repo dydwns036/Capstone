@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.R;
 import com.example.foodapp.model.Post;
+import com.example.foodapp.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -47,8 +48,13 @@ public class adapterPostMenu2 extends RecyclerView.Adapter<adapterPostMenu2.View
 
         holder.txtRecipe.setVisibility(post.getIsRecipe() == 1 ? View.VISIBLE : View.GONE);
 
-        Picasso.get().load(post.getAvatarUrl()).into(holder.imageViewAvatar);
-
+//        Picasso.get().load(post.getAvatarUrl()).into(holder.imageViewAvatar);
+        if (!post.getAvatarUrl().isEmpty()) {
+            Picasso.get().load(post.getAvatarUrl()).into(holder.imageViewAvatar);
+        } else {
+            // Nếu avatarUrl là null, hiển thị ảnh từ resource drawable
+            Picasso.get().load(R.drawable.user_icon2).into(holder.imageViewAvatar);
+        }
         if (!post.getImageUrls().isEmpty()) {
             String imageUrl = post.getImageUrls().get(0); // Lấy URL ảnh đầu tiên trong danh sách
             Picasso.get().load(imageUrl).into(holder.imageViewPost);
