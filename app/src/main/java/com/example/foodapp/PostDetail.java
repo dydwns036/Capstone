@@ -56,8 +56,12 @@ public class PostDetail extends AppCompatActivity {
     }
 
     private void displayPostDetails(Post post) {
-        // Hiển thị thông tin của bài đăng
-        Picasso.get().load(post.getAvatarUrl()).into(imageViewAvatar);
+        String avatarUrl = post.getAvatarUrl();
+        if (avatarUrl != null && !avatarUrl.isEmpty()) {
+            Picasso.get().load(avatarUrl).into(imageViewAvatar);
+        }else{
+            Picasso.get().load(R.drawable.user_icon2).into(imageViewAvatar);
+        }
         textViewUsername.setText(post.getUsername());
         textViewDateTime.setText(post.getDate());
         textViewTitle.setText(post.getTitle());
