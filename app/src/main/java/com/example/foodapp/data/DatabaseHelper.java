@@ -121,9 +121,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Thêm dữ liệu mẫu vào bảng bài viết
         db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (1, 1, 0, '1user1의 게시물 1 내용','ấdasdsadas')");
-        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (1, 1, 1,'my spaghetti very delicious', '2user1의 게시물 2 내용ádlajsdjaspdjpaspajpoadposaposadsaasdokaso kádosa sakdpokspakdkj jdiasjdpsa[dskaokd sjdpas')");
-        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (1, 2, 0, 'ádasdas','3user2의 게시물 1 내용.\n"+"\n"+"ㅁㄴㅇㅁㄴㅇㅁ')");
-        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (1, 2, 1, '볶음밥을 만들었어요','먼저, 끈끈이콩의 껍질을 벗기고 끝부분을 잘라내고 씻어서 입방체로 잘라야 합니다. 그런 다음 소시지를 씻고 바깥층을 벗겨낸 다음 입방체 또는 둥근 조각으로 자릅니다. 다음으로 당근 껍질을 벗기고 씻어서 입방체로 자릅니다.\n" +
+        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (2, 1, 1,'my spaghetti very delicious', '2user1의 게시물 2 내용ádlajsdjaspdjpaspajpoadposaposadsaasdokaso kádosa sakdpokspakdkj jdiasjdpsa[dskaokd sjdpas')");
+        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (3, 2, 0, 'ádasdas','3user2의 게시물 1 내용.\n"+"\n"+"ㅁㄴㅇㅁㄴㅇㅁ')");
+        db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (4, 2, 1, '볶음밥을 만들었어요','먼저, 끈끈이콩의 껍질을 벗기고 끝부분을 잘라내고 씻어서 입방체로 잘라야 합니다. 그런 다음 소시지를 씻고 바깥층을 벗겨낸 다음 입방체 또는 둥근 조각으로 자릅니다. 다음으로 당근 껍질을 벗기고 씻어서 입방체로 자릅니다.\n" +
                 "\n" +
                 "2단계 계란을 풀어주세요\n" +
                 "계란 6개를 그릇에 담아 깨뜨려주세요. 다음으로 후추 1티스푼과 액젓 1티스푼을 넣고 잘 섞습니다.\n" +
@@ -199,7 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count > 0;
     }
     //add post
-    public long insertPost(int userId, int postGroup, int isRecipe, String title, String content, List<String> imageUrls) {
+    public long insertPost(int userId, int postGroup, int isRecipe,  String title, String content, List<String> imageUrls) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, userId);
@@ -241,13 +241,136 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String avatarImage = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
             String coverImage = cursor.getString(cursor.getColumnIndexOrThrow(COVER_IMAGE));
             int isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_ADMIN));
-
             // Khởi tạo đối tượng User từ dữ liệu lấy từ cơ sở dữ liệu
             user = new User(userId, username, useraccname, email, password, avatarImage, coverImage, isAdmin);
             cursor.close();
         }
         db.close();
         return user;
+    }
+
+    public List<Post> searchPost(String query) {
+        List<Post> searchResults = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Truy vấn SQL để tìm kiếm bài viết dựa trên tiêu đề, nội dung và tên người dùng
+        String sqlQuery = "SELECT " + TABLE_USERS + "." + AVATAR_IMAGE + ", " + TABLE_POSTS + ".*, " + TABLE_USERS + "." + COLUMN_USERNAME + ", " + TABLE_POSTS + "." + COLUMN_CREATED_AT + ", " + TABLE_POSTS + "." + COLUMN_POST_TITLE + "," + COLUMN_POST_CONTENT + " FROM " + TABLE_POSTS + " JOIN " + TABLE_USERS + " ON " + TABLE_POSTS + "." + COLUMN_USER_ID + " = " + TABLE_USERS + "." + COLUMN_USER_ID +
+                " WHERE " + COLUMN_POST_TITLE + " LIKE ? OR " +
+                COLUMN_POST_CONTENT + " LIKE ? OR " +
+                TABLE_USERS + "." + COLUMN_USERNAME + " LIKE ?";
+        String[] selectionArgs = {"%" + query + "%", "%" + query + "%", "%" + query + "%"};
+        Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    // Lấy các thông tin cơ bản của bài đăng
+                    String avatarUrl = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+                    String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
+                    String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    // Lấy ID của bài đăng
+                    int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
+                    int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
+
+                    List<String> imageUrls = null;
+                    Post post = new Post(postId, avatarUrl, username, date, title, content, imageUrls, isRecipe);
+                    // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng hiện tại
+                    imageUrls = new ArrayList<>();
+
+                    // Truy vấn để lấy tất cả các URL hình ảnh từ bảng PHOTOS tương ứng với postId
+                    Cursor photoCursor = db.rawQuery("SELECT * FROM " + TABLE_PHOTOS + " WHERE " + COLUMN_POST_ID + " = ?", new String[]{String.valueOf(postId)});
+                    while (photoCursor.moveToNext()) {
+                        String imageUrl = photoCursor.getString(photoCursor.getColumnIndexOrThrow(COLUMN_IMAGE_URL));
+                        // Thêm URL hình ảnh vào danh sách
+                        imageUrls.add(imageUrl);
+                    }
+                    photoCursor.close();
+
+                    // Gán danh sách URL hình ảnh cho bài đăng
+                    post.setImageUrls(imageUrls);
+
+                    // Thêm đối tượng Post vào danh sách
+                    searchResults.add(post);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+        return searchResults;
+    }
+    public List<Post> getPostsByGroupIdAndSearchText(int groupId, String searchText) {
+        List<Post> posts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Xây dựng câu truy vấn dựa trên groupId và từ được tìm kiếm
+        String query = "SELECT " + TABLE_USERS + "." + AVATAR_IMAGE + ", " + TABLE_POSTS + ".*, " + TABLE_USERS + "." + COLUMN_USERNAME + ", " + TABLE_POSTS + "." + COLUMN_CREATED_AT + ", " + TABLE_POSTS + "." + COLUMN_POST_TITLE + "," + COLUMN_POST_CONTENT + " FROM " + TABLE_POSTS + " JOIN " + TABLE_USERS + " ON " + TABLE_POSTS + "." + COLUMN_USER_ID + " = " + TABLE_USERS + "." + COLUMN_USER_ID;
+
+        if (groupId != 0) {
+            // Nếu groupId không phải là 0, thêm điều kiện lọc theo groupId vào câu truy vấn
+            query += " WHERE " + TABLE_POSTS + "." + COLUMN_POST_GROUP + " = " + groupId;
+        }
+
+        // Thêm điều kiện lọc theo từ được tìm kiếm vào câu truy vấn
+        if (!searchText.isEmpty()) {
+            // Nếu từ được tìm kiếm không trống, thêm điều kiện lọc theo từ vào câu truy vấn
+            if (groupId == 0) {
+                // Nếu groupId là 0 (mục "All"), sử dụng điều kiện OR để lọc theo từ được tìm kiếm trong tiêu đề và nội dung bài đăng
+                query += " WHERE " + COLUMN_POST_TITLE + " LIKE '%" + searchText + "%' OR " + COLUMN_POST_CONTENT + " LIKE '%" + searchText + "%'";
+            } else {
+                // Nếu groupId khác 0, sử dụng điều kiện AND để lọc theo từ được tìm kiếm trong tiêu đề và nội dung bài đăng và groupId
+                query += " AND (" + COLUMN_POST_TITLE + " LIKE '%" + searchText + "%' OR " + COLUMN_POST_CONTENT + " LIKE '%" + searchText + "%')";
+            }
+        }
+
+        // Sắp xếp kết quả theo thời gian tạo bài đăng (created_at) theo thứ tự giảm dần
+        query += " ORDER BY " + TABLE_POSTS + "." + COLUMN_CREATED_AT + " DESC";
+
+        // Thực hiện câu truy vấn
+        Cursor cursor = db.rawQuery(query, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    // Lấy các thông tin cơ bản của bài đăng
+                    String avatarUrl = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+                    String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
+                    String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    // Lấy ID của bài đăng
+                    int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
+                    int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
+
+                    List<String> imageUrls = null;
+                    Post post = new Post(postId, avatarUrl, username, date, title, content, imageUrls, isRecipe);
+                    // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng hiện tại
+                    imageUrls = new ArrayList<>();
+
+                    // Truy vấn để lấy tất cả các URL hình ảnh từ bảng PHOTOS tương ứng với postId
+                    Cursor photoCursor = db.rawQuery("SELECT * FROM " + TABLE_PHOTOS + " WHERE " + COLUMN_POST_ID + " = ?", new String[]{String.valueOf(postId)});
+                    while (photoCursor.moveToNext()) {
+                        String imageUrl = photoCursor.getString(photoCursor.getColumnIndexOrThrow(COLUMN_IMAGE_URL));
+                        // Thêm URL hình ảnh vào danh sách
+                        imageUrls.add(imageUrl);
+                    }
+                    photoCursor.close();
+
+                    // Gán danh sách URL hình ảnh cho bài đăng
+                    post.setImageUrls(imageUrls);
+
+                    // Thêm đối tượng Post vào danh sách
+                    posts.add(post);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+        return posts;
     }
 
     // Method to get all posts by post_group
