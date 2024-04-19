@@ -1,100 +1,116 @@
-package com.example.foodapp;
+package com.example.myapplication;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.foodapp.data.DatabaseHelper;
-import com.example.foodapp.model.User;
 
-public class LoginActivity extends AppCompatActivity {
-    TextView signUpTextView,findPassword,buttonLogin;
-    EditText editTextUsername, editTextPassword;
+import com.example.myapplication.adapter.ViewPagerAdapter;
+import com.example.myapplication.model.User;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
-    DatabaseHelper databaseHelper;
+public class MainActivity extends AppCompatActivity {
+
+    private ViewPager2 viewPager;
+    private TabLayout tabLayout;
+    private User loggedInUser;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.login);
-        editTextUsername = findViewById(R.id.taikhoan);
-        editTextPassword = findViewById(R.id.matkhau);
-        buttonLogin = findViewById(R.id.loginbutton);
-        signUpTextView = findViewById(R.id.signUpTextView);
-        findPassword = findViewById(R.id.findPasswordText);
-
-
-        databaseHelper = new DatabaseHelper(this);
-
-        //로그인되어 있으면 메인 화면으로 이동합니다
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get username and password input
-                String useraccname = editTextUsername.getText().toString().trim();
-                String password = editTextPassword.getText().toString().trim();
-
-                // Check if username and password are not empty
-                if (!useraccname.isEmpty() && !password.isEmpty()) {
-                    // Check if username and password are valid
-                    if (databaseHelper.checkUser(useraccname, password)) {
-                        // Login successful
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        User user = databaseHelper.getUserByUseraccname(useraccname);
-                        if (user != null) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("user", user);
-                            startActivity(intent);
-                        } else {
-                            Log.e("LoginActivity", "User not found for username: " + useraccname);
-                        }
-                        finish();
-                    } else {
-                        // Login failed
-                        Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // Empty username or password
-                    Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        //chuyển sang màn hình  sign up khi nhấn text sign up ở cuối màn hình
-        //"화면 하단의 'Sign up' 텍스트를 누르면 '가입' 화면으로 전환됩니다."
-        signUpTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //chuyển đến màn hình tìm mật khẩu khi nhấn "forgot your password"
-        // 'forgot your password?'를 클릭하면 비밀번호 찾기 화면으로 이동합니다
-        findPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, FindPassword.class);
-                startActivity(intent);
-            }
-        });
+        setContentView(R.layout.activity_main);
+        //ẩn nút back
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("user")) {
+            loggedInUser = (User) intent.getSerializableExtra("user");
+        }
+
+
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+
+        // Khởi tạo các Fragment và thêm vào Adapter
+        adapter.addFragment(new Menu1Fragment());
+
+
+        if (loggedInUser != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user", loggedInUser);
+            Menu2Fragment menu2Fragment = new Menu2Fragment();
+            menu2Fragment.setArguments(bundle);
+            adapter.addFragment(menu2Fragment);
+            adapter.addFragment(new Menu3Fragment());
+            adapter.addFragment(new Menu4Fragment());
+
+            Menu5Fragment menu5Fragment = new Menu5Fragment();
+            menu5Fragment.setArguments(bundle);
+            adapter.addFragment(menu5Fragment);
+        }else{
+            adapter.addFragment(new Menu2Fragment());
+            adapter.addFragment(new Menu3Fragment());
+            adapter.addFragment(new Menu4Fragment());
+            adapter.addFragment(new Menu5Fragment());
+        }
+
+//        if (loggedInUser == null) {
+//            Log.e("loggedin ","null");
+//        }
+
+        viewPager.setAdapter(adapter);
+
+
+        int[] tabIcons = {R.drawable.ic_home, R.drawable.bangtin, R.drawable.ic_search, R.drawable.ic_notification, R.drawable.ic_taikhoan};
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            // Xác định hình ảnh cho tab dựa trên vị trí
+            tab.setIcon(tabIcons[position]);
+        }).attach();
+
+
+
+        // Thiết lập bộ lắng nghe cho sự kiện khi người dùng chọn tab
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Lấy vị trí của tab được chọn
+                int position = tab.getPosition();
+                // Di chuyển viewPager đến tab tương ứng
+                viewPager.setCurrentItem(position, true);
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Không cần xử lý khi tab bị bỏ chọn
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Không cần xử lý khi tab được chọn lại
+            }
+        });
     }
 
+    public void switchToMenu3Fragment(int groupId) {
+        ViewPagerAdapter adapter = (ViewPagerAdapter) viewPager.getAdapter();
+        Menu3Fragment menu3Fragment = (Menu3Fragment) adapter.createFragment(2);
 
-    // 사용자가 "가입 img facebook ,twitter, google " 버튼을 클릭했을 때 호출되는 메소드입니다.
-    public void onSignUpButtonClick(View view) {
-        // Tạo Intent để chuyển sang hoạt động đăng ký
+        // Perform the Fragment transition
+        if (menu3Fragment != null) {
+            // Perform any necessary processing before transitioning Fragment (if needed)
+            menu3Fragment.refreshPostsByGroupFromDatabase(groupId);
 
+            // Move to Menu3Fragment
+            viewPager.setCurrentItem(2, true);
+        }
     }
 
 }
