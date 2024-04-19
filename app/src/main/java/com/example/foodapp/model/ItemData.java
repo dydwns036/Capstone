@@ -1,13 +1,15 @@
-package com.example.foodapp.model;
+package com.example.myapplication.model;
 // Tạo lớp ItemData.java
 public class ItemData {
     private int imageResId;
     private String itemgridName;
-
-    public ItemData(int imageResId, String itemgridName) {
+    private int groupId;
+    public ItemData(int imageResId, String itemgridName,int gruopId) {
         this.imageResId = imageResId;
         this.itemgridName = itemgridName;
+        this.groupId = gruopId;
     }
+
 
     public int getImageResId() {
         return imageResId;
@@ -17,5 +19,7 @@ public class ItemData {
         return itemgridName;
     }
 
-
+    public int getGroupId() {
+        return groupId;
+    }
 }
