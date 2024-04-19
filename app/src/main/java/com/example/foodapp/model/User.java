@@ -1,5 +1,8 @@
-package com.example.foodapp.model;
-public class User {
+package com.example.myapplication.model;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int userId;
     private String username;
     private String userAccname;
@@ -17,6 +20,11 @@ public class User {
         this.coverImage = coverImage;
         this.isAdmin = isAdmin;
     }
+
+    public User(int userId, String username, String useraccname, String email, String password, String avatarImage, String coverImage, int isAdmin) {
+    }
+
+
 
     public int getUserId() {
         return userId;
