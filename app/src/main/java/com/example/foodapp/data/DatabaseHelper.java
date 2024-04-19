@@ -1,4 +1,4 @@
-package com.example.foodapp.data;
+package com.example.myapplication.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.foodapp.model.Post;
-import com.example.foodapp.model.User;
+
+import com.example.myapplication.model.Post;
+import com.example.myapplication.model.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -237,12 +237,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
             String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
             String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
-            String password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
             String avatarImage = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
             String coverImage = cursor.getString(cursor.getColumnIndexOrThrow(COVER_IMAGE));
             int isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_ADMIN));
             // Khởi tạo đối tượng User từ dữ liệu lấy từ cơ sở dữ liệu
-            user = new User(userId, username, useraccname, email, password, avatarImage, coverImage, isAdmin);
+            user = new User(userId, username, useraccname, email, avatarImage, coverImage, isAdmin);
             cursor.close();
         }
         db.close();
