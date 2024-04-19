@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +19,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.model.ItemData;
-import com.example.foodapp.adapter.adapterPostMenu1;
-import com.example.foodapp.data.DatabaseHelper;
-import com.example.foodapp.model.Post;
+import com.example.myapplication.adapter.adapterPostMenu1;
+import com.example.myapplication.data.DatabaseHelper;
+import com.example.myapplication.model.ItemData;
+import com.example.myapplication.model.Post;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class Menu1Fragment extends Fragment {
                 public void onClick(View v) {
                     // add activity/intent here
                     Toast.makeText(requireContext(), item.getItemgridName(), Toast.LENGTH_SHORT).show();
+                    int groupId = item.getGroupId();
+                    ((MainActivity)requireActivity()).switchToMenu3Fragment(groupId);
                 }
             });
             gridLayout.addView(itemView);
@@ -119,22 +122,21 @@ public class Menu1Fragment extends Fragment {
 
     private List<ItemData> createItemgridList() {
         List<ItemData> itemgridList = new ArrayList<>();
-        // Add data for each item
-        itemgridList.add(new ItemData(R.drawable.meat, "고기"));
-        itemgridList.add(new ItemData(R.drawable.seafood, "생선"));
-        itemgridList.add(new ItemData(R.drawable.cereal, "곡류"));
-        itemgridList.add(new ItemData(R.drawable.vegetable, "채소"));
+        itemgridList.add(new ItemData(R.drawable.meat, "고기",1));
+        itemgridList.add(new ItemData(R.drawable.seafood, "생선",2));
+        itemgridList.add(new ItemData(R.drawable.cereal, "곡류",3));
+        itemgridList.add(new ItemData(R.drawable.vegetable, "채소",4));
 //        itemgridList.add(new ItemData(R.drawable.botmi, "간식"));
-        itemgridList.add(new ItemData(R.drawable.dessert, "디저트"));
-        itemgridList.add(new ItemData(R.drawable.cooking, " 끓임"));
-        itemgridList.add(new ItemData(R.drawable.deep_fried, "튀김"));
-        itemgridList.add(new ItemData(R.drawable.soup, " 국"));
-        itemgridList.add(new ItemData(R.drawable.grill, "구워"));
-        itemgridList.add(new ItemData(R.drawable.fried, "볶음"));
-        itemgridList.add(new ItemData(R.drawable.smoothie, "스무티"));
-        itemgridList.add(new ItemData(R.drawable.ic_delete, "Item 13"));
-        itemgridList.add(new ItemData(R.drawable.ic_delete, "Item 14"));
-        itemgridList.add(new ItemData(R.drawable.ic_delete, "Item 15"));
+        itemgridList.add(new ItemData(R.drawable.dessert, "디저트",5));
+        itemgridList.add(new ItemData(R.drawable.cooking, " 끓임",6));
+        itemgridList.add(new ItemData(R.drawable.deep_fried, "튀김",7));
+        itemgridList.add(new ItemData(R.drawable.soup, " 국",8));
+        itemgridList.add(new ItemData(R.drawable.grill, "구워",9));
+        itemgridList.add(new ItemData(R.drawable.fried, "볶음",10));
+        itemgridList.add(new ItemData(R.drawable.smoothie, "스무티",11));
+        itemgridList.add(new ItemData(R.drawable.ic_delete, "Item 12",12));
+        itemgridList.add(new ItemData(R.drawable.ic_delete, "Item 13",13));
+        itemgridList.add(new ItemData(R.drawable.ic_delete, "Item 14",14));
         // Add data for other items here
         return itemgridList;
     }
