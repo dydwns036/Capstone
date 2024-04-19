@@ -1,9 +1,9 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 
 import android.content.Intent;
-
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.data.DatabaseHelper;
+import com.example.myapplication.data.DatabaseHelper;
+import com.example.myapplication.model.User;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class AddPostActivity extends AppCompatActivity {
     private Button buttonChooseImage;
     private RecyclerView imageViewSelected;
     private Button buttonSubmit;
+    private User loggedInUser;
 
     private DatabaseHelper databaseHelper;
 
@@ -40,6 +42,10 @@ public class AddPostActivity extends AppCompatActivity {
 
         // Khởi tạo đối tượng DatabaseHelper
         databaseHelper = new DatabaseHelper(this);
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("user")) {
+            loggedInUser = (User) intent.getSerializableExtra("user");
+        }
 
         // Ánh xạ các view từ layout
         checkBoxIsRecipe = findViewById(R.id.checkBoxIsRecipe);
@@ -76,8 +82,9 @@ public class AddPostActivity extends AppCompatActivity {
                     return;
                 }
 
-
-                long postId = databaseHelper.insertPost(2, 1, isRecipe ? 1 : 0, title, content, new ArrayList<String>());
+                int userId = loggedInUser.getUserId();
+//                Log.e("usid", String.valueOf(userId));
+                long postId = databaseHelper.insertPost(userId, 1, isRecipe ? 1 : 0, title, content, new ArrayList<String>());
                 if (postId != -1) {
                     Toast.makeText(AddPostActivity.this, "Đã gửi bài viết thành công", Toast.LENGTH_SHORT).show();
 //                    Intent intent = new Intent(AddPostActivity.this, Menu2Fragment.class);
