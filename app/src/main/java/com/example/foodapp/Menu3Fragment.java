@@ -1,13 +1,18 @@
 package com.example.myapplication;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -37,17 +42,31 @@ public class Menu3Fragment extends Fragment {
     private ImageView searchButton,filterButton,searchButtonL;
     private HorizontalScrollView horizontalScrollView;
     private String searchText = "";
+    private View childView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.menu3fragment, container, false);
 
         // Nhận groupID từ bundle
-        Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey("GROUP_ID")) {
-            groupID = bundle.getInt("GROUP_ID");
-            Log.e("groupid nhận được:", String.valueOf(groupID));
+//        Bundle bundle = getArguments();
+//        if (bundle != null && bundle.containsKey("GROUP_ID")) {
+//            groupID = bundle.getInt("GROUP_ID");
+//            Log.e("groupid nhận được:", String.valueOf(groupID));
+//
+//        }
 
-        }
+        searchButtonL = view.findViewById(R.id.search_button_left);
+        horizontalScrollView = view.findViewById(R.id.horizontalScrollView);
+        textView3 = view.findViewById(R.id.textview3);
+
+        emptyView = view.findViewById(R.id.emptyView);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        postList = new ArrayList<>();
+        adapter = new adapterPostMenu1(getActivity(), postList, new MyOnPostClickListener());
+        recyclerView.setAdapter(adapter);
+
+
         ViewPager2 viewPager2 = getActivity().findViewById(R.id.viewPager);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -70,7 +89,7 @@ public class Menu3Fragment extends Fragment {
                 LinearLayout linearLayout = view.findViewById(R.id.filterLayout);
                 // Đặt trạng thái chọn cho TextView được chọn và huỷ chọn các TextView khác
                 for (int i = 0; i < linearLayout.getChildCount(); i++) {
-                    View childView = linearLayout.getChildAt(i);
+                    childView = linearLayout.getChildAt(i);
                     if (childView == v) {
                         // TextView được chọn
                         childView.setSelected(true);
@@ -101,16 +120,21 @@ public class Menu3Fragment extends Fragment {
             childView.setTag(getGroupIdForPosition(i)); // Đặt loại mã nhận dạng cho mỗi mục
             childView.setOnClickListener(itemClickListener);
         }
-        searchButtonL = view.findViewById(R.id.search_button_left);
-        horizontalScrollView = view.findViewById(R.id.horizontalScrollView);
-        textView3 = view.findViewById(R.id.textview3);
         searchEditText = view.findViewById(R.id.search_editText);
-        emptyView = view.findViewById(R.id.emptyView);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        postList = new ArrayList<>();
-        adapter = new adapterPostMenu1(getActivity(), postList, new MyOnPostClickListener());
-        recyclerView.setAdapter(adapter);
+        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    // Ẩn bàn phím khi nhấn Enter
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -188,6 +212,12 @@ public class Menu3Fragment extends Fragment {
         }
         retrievePostsByGroupFromDatabase();
         groupID=0;
+        LinearLayout linearLayout = getView().findViewById(R.id.filterLayout);
+        linearLayout.getChildAt(0).setSelected(true);
+        for (int i = 1; i < linearLayout.getChildCount(); i++) {
+            View childView = linearLayout.getChildAt(i);
+                childView.setSelected(false);
+        }
     }
     // Phương thức để lấy loại mã nhận dạng (groupId) cho mỗi vị trí trong thanh cuộn ngang
     private int getGroupIdForPosition(int position) {
