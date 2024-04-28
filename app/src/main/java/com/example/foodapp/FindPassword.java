@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 public class FindPassword {
 }

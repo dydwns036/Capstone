@@ -1,4 +1,4 @@
-package com.example.foodapp.adapter;
+package com.example.myapplication.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.R;
+import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
