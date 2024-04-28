@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,9 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-//import com.example.foodapp.adapter.adapterPost;
-//import com.example.foodapp.data.DatabaseAll;
-//import com.example.foodapp.model.Truyen;
+//import com.example.myapplication.adapter.adapterPost;
+//import com.example.myapplication.data.DatabaseAll;
+//import com.example.myapplication.model.Truyen;
 
 import java.util.ArrayList;
 

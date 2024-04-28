@@ -1,4 +1,4 @@
-package com.example.foodapp.model;
+package com.example.myapplication.model;
 import android.graphics.Bitmap;
 import com.squareup.picasso.Transformation;
 

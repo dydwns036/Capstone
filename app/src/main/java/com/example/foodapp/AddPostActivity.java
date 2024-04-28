@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 
 import android.content.Intent;
@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.data.DatabaseHelper;
+import com.example.myapplication.data.DatabaseHelper;
 
 import java.util.ArrayList;
 

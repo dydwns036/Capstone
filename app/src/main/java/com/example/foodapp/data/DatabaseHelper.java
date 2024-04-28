@@ -1,4 +1,4 @@
-package com.example.foodapp.data;
+package com.example.myapplication.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.foodapp.model.Post;
-import com.example.foodapp.model.User;
+import com.example.myapplication.model.Post;
+import com.example.myapplication.model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;

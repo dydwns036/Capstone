@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +19,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.model.ItemData;
-import com.example.foodapp.adapter.adapterPostMenu1;
-import com.example.foodapp.data.DatabaseHelper;
-import com.example.foodapp.model.Post;
+import com.example.myapplication.model.ItemData;
+import com.example.myapplication.adapter.adapterPostMenu1;
+import com.example.myapplication.data.DatabaseHelper;
+import com.example.myapplication.model.Post;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

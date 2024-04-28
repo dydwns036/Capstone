@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,13 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.PostDetail;
-import com.example.foodapp.R;
-import com.example.foodapp.adapter.adapterPostMenu2;
-import com.example.foodapp.data.DatabaseHelper;
-import com.example.foodapp.model.CircleTransform;
-import com.example.foodapp.model.Post;
-import com.example.foodapp.model.User;
+import com.example.myapplication.PostDetail;
+import com.example.myapplication.R;
+import com.example.myapplication.adapter.adapterPostMenu2;
+import com.example.myapplication.data.DatabaseHelper;
+import com.example.myapplication.model.CircleTransform;
+import com.example.myapplication.model.Post;
+import com.example.myapplication.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

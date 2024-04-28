@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.adapter.PostImageAdapter;
-import com.example.foodapp.model.Post;
+import com.example.myapplication.adapter.PostImageAdapter;
+import com.example.myapplication.model.Post;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

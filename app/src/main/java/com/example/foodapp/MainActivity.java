@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,8 +9,8 @@ import android.util.Log;
 
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.foodapp.adapter.ViewPagerAdapter;
-import com.example.foodapp.model.User;
+import com.example.myapplication.adapter.ViewPagerAdapter;
+import com.example.myapplication.model.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

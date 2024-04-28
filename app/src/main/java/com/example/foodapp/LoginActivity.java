@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodapp.data.DatabaseHelper;
-import com.example.foodapp.model.User;
+import com.example.myapplication.data.DatabaseHelper;
+import com.example.myapplication.model.User;
 
 public class LoginActivity extends AppCompatActivity {
     TextView signUpTextView,findPassword,buttonLogin;

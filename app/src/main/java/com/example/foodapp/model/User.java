@@ -1,4 +1,4 @@
-package com.example.foodapp.model;
+package com.example.myapplication.model;
 public class User {
     private int userId;
     private String username;

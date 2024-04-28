@@ -1,4 +1,4 @@
-package com.example.foodapp.adapter;
+package com.example.myapplication.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.foodapp.R;
-import com.example.foodapp.model.Post;
+import com.example.myapplication.R;
+import com.example.myapplication.model.Post;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
