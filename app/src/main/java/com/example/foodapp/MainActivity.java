@@ -2,12 +2,15 @@ package com.example.foodapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 
 import androidx.viewpager2.widget.ViewPager2;
+
 
 import com.example.foodapp.adapter.ViewPagerAdapter;
 import com.example.foodapp.model.User;
@@ -19,11 +22,15 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
     private User loggedInUser;
+    private InputMethodManager inputMethodManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         //ẩn nút back
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -40,22 +47,33 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
 
         // Khởi tạo các Fragment và thêm vào Adapter
-        adapter.addFragment(new Menu1Fragment());
+
 
 
         if (loggedInUser != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", loggedInUser);
+
+
+            Menu1Fragment menu1Fragment = new Menu1Fragment();
+            menu1Fragment.setArguments(bundle);
+            adapter.addFragment(menu1Fragment);
+
             Menu2Fragment menu2Fragment = new Menu2Fragment();
             menu2Fragment.setArguments(bundle);
             adapter.addFragment(menu2Fragment);
-            adapter.addFragment(new Menu3Fragment());
+
+            Menu3Fragment menu3Fragment = new Menu3Fragment();
+            menu3Fragment.setArguments(bundle);
+            adapter.addFragment(menu3Fragment);
+
             adapter.addFragment(new Menu4Fragment());
 
             Menu5Fragment menu5Fragment = new Menu5Fragment();
             menu5Fragment.setArguments(bundle);
             adapter.addFragment(menu5Fragment);
         }else{
+            adapter.addFragment(new Menu1Fragment());
             adapter.addFragment(new Menu2Fragment());
             adapter.addFragment(new Menu3Fragment());
             adapter.addFragment(new Menu4Fragment());
@@ -67,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         viewPager.setAdapter(adapter);
-
+        viewPager.setOffscreenPageLimit(5);
 
         int[] tabIcons = {R.drawable.ic_home, R.drawable.bangtin, R.drawable.ic_search, R.drawable.ic_notification, R.drawable.ic_taikhoan};
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
@@ -85,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 int position = tab.getPosition();
                 // Di chuyển viewPager đến tab tương ứng
                 viewPager.setCurrentItem(position, true);
+//                viewPager.setCurrentItem(tab.getPosition(), true);
+//                hideKeyboard();
+
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -111,5 +132,10 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setCurrentItem(2, true);
         }
     }
+//    private void hideKeyboard() {
+//        if (inputMethodManager != null && getCurrentFocus() != null) {
+//            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+//        }
+//    }
 
 }

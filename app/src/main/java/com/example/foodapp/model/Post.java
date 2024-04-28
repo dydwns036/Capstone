@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Post implements Serializable {
-    private int id;
+    private int userid;
+    private int postId;
     private String avatarUrl;
     private String username;
     private String date;
@@ -12,9 +13,11 @@ public class Post implements Serializable {
     private String content;
     private List<String> imageUrls;
     private int isRecipe;
+    private List<Comment> comments;
+    private boolean isLiked;
 
-    public Post(int id, String avatarUrl, String username, String date, String title, String content, List<String> imageUrls, int isRecipe) {
-        this.id = id;
+    public Post(int userid,int postId,String avatarUrl, String username, String date, String title, String content, List<String> imageUrls, int isRecipe,List<Comment> comments) {
+        this.userid = userid;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.date = date;
@@ -22,23 +25,27 @@ public class Post implements Serializable {
         this.content = content;
         this.imageUrls = imageUrls;
         this.isRecipe = isRecipe;
+        this.comments = comments;
+        this.postId = postId;
+        this.isLiked = false;
     }
+
+    public int getPostId() {return postId;}
+    public void setPostId(int postId) {this.postId =postId;}
 
     public int getId() {
-        return id;
+        return userid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int userid) {
+        this.userid = userid;
     }
 
     public String getAvatarUrl() {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
+
 
     public String getUsername() {
         return username;
@@ -52,16 +59,9 @@ public class Post implements Serializable {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
@@ -84,7 +84,20 @@ public class Post implements Serializable {
         return isRecipe;
     }
 
-    public void setIsRecipe(int isRecipe) {
-        this.isRecipe = isRecipe;
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

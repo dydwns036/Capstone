@@ -3,14 +3,15 @@ package com.example.foodapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import com.example.foodapp.data.DatabaseHelper;
 import com.example.foodapp.model.User;
@@ -37,33 +38,21 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get username and password input
-                String useraccname = editTextUsername.getText().toString().trim();
-                String password = editTextPassword.getText().toString().trim();
+                Login();
+            }
+        });
 
-                // Check if username and password are not empty
-                if (!useraccname.isEmpty() && !password.isEmpty()) {
-                    // Check if username and password are valid
-                    if (databaseHelper.checkUser(useraccname, password)) {
-                        // Login successful
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        User user = databaseHelper.getUserByUseraccname(useraccname);
-                        if (user != null) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("user", user);
-                            startActivity(intent);
-                        } else {
-                            Log.e("LoginActivity", "User not found for username: " + useraccname);
-                        }
-                        finish();
-                    } else {
-                        // Login failed
-                        Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // Empty username or password
-                    Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+        editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                        (event != null && event.getAction() == KeyEvent.ACTION_DOWN &&
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    Login();
+                    return true;
                 }
+                return false;
             }
         });
         //chuyển sang màn hình  sign up khi nhấn text sign up ở cuối màn hình
@@ -89,12 +78,34 @@ public class LoginActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
     }
+    public void Login() {
+        // Get username and password input
+        String useraccname = editTextUsername.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
-
-    // 사용자가 "가입 img facebook ,twitter, google " 버튼을 클릭했을 때 호출되는 메소드입니다.
-    public void onSignUpButtonClick(View view) {
-        // Tạo Intent để chuyển sang hoạt động đăng ký
-
+        // Check if username and password are not empty
+        if (!useraccname.isEmpty() && !password.isEmpty()) {
+            // Check if username and password are valid
+            if (databaseHelper.checkUser(useraccname, password)) {
+                // Login successful
+                Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                User user = databaseHelper.getUserByUseraccname(useraccname);
+                if (user != null) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                } else {
+                    Log.e("LoginActivity", "User not found for username: " + useraccname);
+                }
+                finish();
+            } else {
+                // Login failed
+                Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Empty username or password
+            Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

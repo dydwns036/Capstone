@@ -44,14 +44,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PostDetail" />
+        <activity android:name=".PostDetail"
+            android:label="Article Details"/>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".AddPostActivity"/>
+        <activity android:name=".AddPostActivity"
+            android:label="Share or Create Recipe"/>
         <activity android:name=".Menu1Fragment"/>
         <activity android:name=".Menu5Fragment"/>
         <activity android:name=".Menu2Fragment"/>
         <activity android:name=".Menu3Fragment"/>
         <activity android:name=".Menu4Fragment"/>
+        <activity android:name=".FindPassword"
+            android:label="Find Password"/>
         <activity
             android:name=".MainActivity">
             <meta-data

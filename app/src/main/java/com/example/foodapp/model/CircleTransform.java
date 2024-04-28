@@ -1,5 +1,7 @@
 package com.example.foodapp.model;
+
 import android.graphics.Bitmap;
+
 import com.squareup.picasso.Transformation;
 
 public class CircleTransform implements Transformation {

@@ -3,18 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <CheckBox
-        android:id="@+id/checkBoxIsRecipe"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipe"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/checkBoxIsRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is a cooking recipe " />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Please select a category"/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
     <!-- Tiêu đề -->
     <EditText
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tiêu đề"
+        android:hint="Name your culinary creation!"
         android:textSize="18sp"
         android:padding="10dp"
         android:layout_marginHorizontal="10dp"/>
@@ -24,7 +39,7 @@
         android:id="@+id/editTextContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập nội dung của bài viết"
+        android:hint="Share your cooking steps!"
         android:padding="10dp"
         android:layout_margin="10dp"
         android:gravity="top"
@@ -35,7 +50,7 @@
         android:id="@+id/buttonChooseImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chọn ảnh từ bộ nhớ"
+        android:text="add image"
         android:layout_margin="10dp"
         android:padding="10dp"/>
 
@@ -54,7 +69,7 @@
         android:id="@+id/buttonSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Gửi bài viết"
+        android:text="Send"
         android:layout_margin="10dp"
         android:padding="10dp"/>
 
