@@ -1,4 +1,4 @@
-package com.example.myapplication.data;
+package com.example.foodapp.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.example.myapplication.model.Post;
-import com.example.myapplication.model.User;
+import com.example.foodapp.model.Comment;
+import com.example.foodapp.model.Post;
+import com.example.foodapp.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Thêm dữ liệu mẫu vào bảng người dùng
         db.execSQL("INSERT INTO " + TABLE_USERS + "(" + COLUMN_USERNAME + ", " + COLUMN_USERACCNAME + ", " + COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ", " + AVATAR_IMAGE + ", " + COVER_IMAGE + ", " + COLUMN_IS_ADMIN + ") VALUES ('chinhuy','user1', 'user1@example.com', 'password1', 'https://cdn.alongwalk.info/vn/wp-content/uploads/2022/10/14054048/image-100-y-tuong-avatar-cute-doc-dao-an-tuong-nhat-cho-ban-166567564813495.jpg', 'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg', 0)");
         db.execSQL("INSERT INTO " + TABLE_USERS + "(" + COLUMN_USERNAME + ", " + COLUMN_USERACCNAME + ",  " + COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ", " + AVATAR_IMAGE + ", " + COVER_IMAGE + ", " + COLUMN_IS_ADMIN + ") VALUES ('yongjun','user2', 'user2@example.com', 'password2', 'https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/tin-tuc/175607/Originals/avt-cho-cute%20(39).jpg', 'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?cs=srgb&dl=pexels-pixabay-531880.jpg&fm=jpg', 0)");
-
+        db.execSQL("INSERT INTO " + TABLE_USERS + "(" + COLUMN_USERNAME + ", " + COLUMN_USERACCNAME + ",  " + COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ", " + AVATAR_IMAGE + ", " + COVER_IMAGE + ", " + COLUMN_IS_ADMIN + ") VALUES ('sdfsd','as', 'sdfsdf@example.com', 'as', '', '', 0)");
         // Thêm dữ liệu mẫu vào bảng bài viết
         db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (1, 1, 0, '1user1의 게시물 1 내용','ấdasdsadas')");
         db.execSQL("INSERT INTO " + TABLE_POSTS + "(" + COLUMN_POST_GROUP + ", " + COLUMN_USER_ID + ", " + IS_RECIPE + ", " + COLUMN_POST_TITLE +", " + COLUMN_POST_CONTENT + ") VALUES (2, 1, 1,'my spaghetti very delicious', '2user1의 게시물 2 내용ádlajsdjaspdjpaspajpoadposaposadsaasdokaso kádosa sakdpokspakdkj jdiasjdpsa[dskaokd sjdpas')");
@@ -147,6 +148,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_PHOTOS + "(" + COLUMN_POST_ID + ", " + COLUMN_IMAGE_URL + ") VALUES (4, 'https://cdn.tgdd.vn/Files/2021/08/03/1372738/cach-lam-com-rang-thap-cam-vua-dep-mat-lai-ngon-mieng-202108031450180412.jpg')");
         db.execSQL("INSERT INTO " + TABLE_PHOTOS + "(" + COLUMN_POST_ID + ", " + COLUMN_IMAGE_URL + ") VALUES (4, 'https://cdn.tgdd.vn/Files/2021/08/03/1372738/cach-lam-com-rang-thap-cam-vua-dep-mat-lai-ngon-mieng-202108031450342027.jpg')");
         db.execSQL("INSERT INTO " + TABLE_PHOTOS + "(" + COLUMN_POST_ID + ", " + COLUMN_IMAGE_URL + ") VALUES (4, 'https://cdn.tgdd.vn/Files/2021/08/03/1372738/cach-lam-com-rang-thap-cam-vua-dep-mat-lai-ngon-mieng-202108031451090050.jpg')");
+
+        db.execSQL("INSERT INTO " + TABLE_COMMENTS + "(" + COLUMN_USER_ID + ", " + COLUMN_POST_ID + ", " + COLUMN_COMMENT_CONTENT + ") VALUES (1, 4, '와우, 포스트 정말 흥미로워요! 정말 멋진 일이에요! 😊')");
+        db.execSQL("INSERT INTO " + TABLE_COMMENTS + "(" + COLUMN_USER_ID + ", " + COLUMN_POST_ID + ", " + COLUMN_COMMENT_CONTENT + ") VALUES (2, 4, '맛있는 이탈리안 파스타! 여기서 만드는 법을 다른 분들과 공유해주시겠어요? 🍝')");
+        db.execSQL("INSERT INTO " + TABLE_COMMENTS + "(" + COLUMN_USER_ID + ", " + COLUMN_POST_ID + ", " + COLUMN_COMMENT_CONTENT + ") VALUES (1, 4, '정말 아름다운 이미지네요! 😍')");
+        db.execSQL("INSERT INTO " + TABLE_COMMENTS + "(" + COLUMN_USER_ID + ", " + COLUMN_POST_ID + ", " + COLUMN_COMMENT_CONTENT + ") VALUES (2, 4, '이 요리 정말 맛있어 보여요! 지금 만들어 먹어야겠어요! 공유해주셔서 감사합니다! 👍')");
+        db.execSQL("INSERT INTO " + TABLE_COMMENTS + "(" + COLUMN_USER_ID + ", " + COLUMN_POST_ID + ", " + COLUMN_COMMENT_CONTENT + ") VALUES (1, 4, '훌륭해요! 설명이 매우 자세하고 이해하기 쉬워요. 지금 만들어 먹어 볼게요! 🥢')");
+
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -219,6 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return postId;
     }
+
     //delete post
     public void deletePost(int postId) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -228,6 +237,145 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_PHOTOS, COLUMN_POST_ID + " = ?", new String[]{String.valueOf(postId)});
         db.close();
     }
+
+    public long addComment(int userId, int postId, String commentContent) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, userId);
+        values.put(COLUMN_POST_ID, postId);
+        values.put(COLUMN_COMMENT_CONTENT, commentContent);
+        // Thêm dòng mới vào bảng comments
+        long newRowId = db.insert(TABLE_COMMENTS, null, values);
+        db.close();
+        return newRowId;
+    }
+    public List<Comment> getCommentsForPost(int postId) {
+        List<Comment> comments = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " +
+                TABLE_USERS + "." + AVATAR_IMAGE + ", " +
+                TABLE_COMMENTS + ".*, " +
+                TABLE_USERS + "." + COLUMN_USERNAME + " " +
+                "FROM " + TABLE_COMMENTS + " " +
+                "JOIN " + TABLE_USERS + " ON " +
+                TABLE_COMMENTS + "." + COLUMN_USER_ID + " = " +
+                TABLE_USERS + "." + COLUMN_USER_ID + " " +
+                "WHERE " + COLUMN_POST_ID + " = ?"+
+                "ORDER BY " + COLUMN_CREATED_AT + " DESC", new String[]{String.valueOf(postId)});
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    String commentAvatarUrl = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+                    String commentUsername = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+                    String commentContent = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENT_CONTENT));
+
+                    Comment comment = new Comment(commentAvatarUrl, commentUsername, commentContent);
+                    comments.add(comment);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+        return comments;
+    }
+    public int getCommentCountForPost(int postId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int commentCount = 0;
+
+        String query = "SELECT COUNT(*) FROM " + TABLE_COMMENTS +
+                " WHERE " + COLUMN_POST_ID + " = " + postId;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            commentCount = cursor.getInt(0);
+            cursor.close();
+        }
+
+        return commentCount;
+    }
+    public int getLikeCountForPost(int postId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int likeCount = 0;
+
+        String query = "SELECT COUNT(*) FROM " + TABLE_LIKES +
+                " WHERE " + COLUMN_POST_ID + " = " + postId;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            likeCount = cursor.getInt(0);
+            cursor.close();
+        }
+
+        return likeCount;
+    }
+    //    public void likePost(int postId, int userId,) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_POST_ID, postId);
+//        values.put(COLUMN_USER_ID, userId);
+//        // Thêm dữ liệu vào bảng LIKES
+//        db.insert(TABLE_LIKES, null, values);
+//        db.close();
+//    }
+//
+//    // Phương thức để xóa like bài viết khỏi cơ sở dữ liệu
+//    public void unlikePost(int postId, int userId) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        // Xóa dữ liệu từ bảng LIKES dựa trên postId và userId
+//        db.delete(TABLE_LIKES, COLUMN_POST_ID + " = ? AND " + COLUMN_USER_ID + " = ?",
+//                new String[]{String.valueOf(postId), String.valueOf(userId)});
+//        db.close();
+//    }
+    public void toggleLike(int userId, int postId, boolean isLiked) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, userId);
+        values.put(COLUMN_POST_ID, postId);
+
+        if (isLiked) {
+            // Nếu đang like, thêm bản ghi vào bảng LIKES
+            db.insert(TABLE_LIKES, null, values);
+        } else {
+            // Nếu đang unlike, xóa bản ghi từ bảng LIKES
+            db.delete(TABLE_LIKES, COLUMN_USER_ID + " = ? AND " + COLUMN_POST_ID + " = ?",
+                    new String[]{String.valueOf(userId), String.valueOf(postId)});
+        }
+        db.close();
+    }
+
+    public boolean isPostLikedByUser(int postId, int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_LIKES + " WHERE " + COLUMN_POST_ID + " = ? AND " + COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(postId), String.valueOf(userId)});
+        boolean isLiked = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return isLiked;
+    }
+
+    public List<Integer> getLikedPostsByUserId(int userId) {
+        List<Integer> likedPostIds = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " + COLUMN_POST_ID +
+                " FROM " + TABLE_LIKES +
+                " WHERE " + COLUMN_USER_ID + " = " + userId;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
+                likedPostIds.add(postId);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return likedPostIds;
+    }
+
 
     public User getUserByUseraccname(String useraccname) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -269,12 +417,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
                     String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
                     String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
                     // Lấy ID của bài đăng
                     int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
                     int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
 
                     List<String> imageUrls = null;
-                    Post post = new Post(postId, avatarUrl, username, date, title, content, imageUrls, isRecipe);
+                    Post post = new Post(userId, postId, avatarUrl, username, date, title, content, imageUrls, isRecipe,new ArrayList<>());
                     // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng hiện tại
                     imageUrls = new ArrayList<>();
 
@@ -339,12 +488,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
                     String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
                     String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
                     // Lấy ID của bài đăng
                     int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
                     int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
 
                     List<String> imageUrls = null;
-                    Post post = new Post(postId, avatarUrl, username, date, title, content, imageUrls, isRecipe);
+                    Post post = new Post(userId,postId, avatarUrl, username, date, title, content, imageUrls, isRecipe,new ArrayList<>());
                     // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng hiện tại
                     imageUrls = new ArrayList<>();
 
@@ -387,12 +537,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
                     String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
                     String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
                     // Lấy ID của bài đăng
                     int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
                     int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
 
                     List<String> imageUrls = null;
-                    Post post = new Post(postId, avatarUrl, username, date, title, content, imageUrls, isRecipe);
+                    Post post = new Post(userId,postId, avatarUrl, username, date, title, content, imageUrls, isRecipe,new ArrayList<>());
                     // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng hiện tại
                     imageUrls = new ArrayList<>();
 
@@ -419,11 +570,98 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return posts;
     }
 
-    // get all post
+
+
+    public List<Post> getPopularPosts() {
+        List<Post> posts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + TABLE_USERS + "." + AVATAR_IMAGE + ", " + TABLE_POSTS + ".*, " + TABLE_USERS + "." + COLUMN_USERNAME + ", " + TABLE_POSTS + "." + COLUMN_CREATED_AT + ", " + TABLE_POSTS + "." + COLUMN_POST_TITLE + "," + COLUMN_POST_CONTENT + ", " +
+                "COUNT(" + TABLE_LIKES + "." + COLUMN_USER_ID + ") AS likeCount, " + // Đếm số lượt thích cho mỗi bài viết
+                "CASE WHEN " + TABLE_LIKES + "." + COLUMN_USER_ID + " IS NULL THEN 0 ELSE 1 END AS isLiked " + // Kiểm tra xem người dùng đã thích bài viết chưa
+                "FROM " + TABLE_POSTS +
+                " JOIN " + TABLE_USERS + " ON " + TABLE_POSTS + "." + COLUMN_USER_ID + " = " + TABLE_USERS + "." + COLUMN_USER_ID +
+                " LEFT JOIN " + TABLE_LIKES + " ON " + TABLE_POSTS + "." + COLUMN_POST_ID + " = " + TABLE_LIKES + "." + COLUMN_POST_ID +
+                " WHERE " + TABLE_POSTS + "." + COLUMN_CREATED_AT + " >= date('now', '-30 days') " + // Chỉ lấy các bài viết được tạo trong vòng 30 ngày
+                " GROUP BY " + TABLE_POSTS + "." + COLUMN_POST_ID + // Nhóm các bài viết theo ID để đếm số lượt thích
+                " ORDER BY likeCount DESC " + // Sắp xếp kết quả theo số lượt thích giảm dần
+                " LIMIT 5", null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    // Lấy các thông tin cơ bản của bài đăng
+                    String avatarUrl = cursor.getString(cursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+                    String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
+                    String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
+                    // Lấy ID của bài đăng
+                    int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
+                    int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
+                    // Kiểm tra trạng thái like của bài viết
+                    boolean isLiked = cursor.getInt(cursor.getColumnIndexOrThrow("isLiked")) == 1;
+
+                    List<String> imageUrls = null;
+                    Post post = new Post(userId, postId, avatarUrl, username, date, title, content, imageUrls, isRecipe, new ArrayList<>());
+                    post.setLiked(isLiked); // Cập nhật trạng thái like của bài viết
+
+                    // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng
+                    imageUrls = new ArrayList<>();
+
+                    // Truy vấn để lấy tất cả các URL hình ảnh từ bảng PHOTOS tương ứng với postId
+                    Cursor photoCursor = db.rawQuery("SELECT * FROM " + TABLE_PHOTOS + " WHERE " + COLUMN_POST_ID + " = ?", new String[]{String.valueOf(postId)});
+                    while (photoCursor.moveToNext()) {
+                        String imageUrl = photoCursor.getString(photoCursor.getColumnIndexOrThrow(COLUMN_IMAGE_URL));
+                        // Thêm URL hình ảnh vào danh sách
+                        imageUrls.add(imageUrl);
+                    }
+                    photoCursor.close();
+
+                    // Gán danh sách URL hình ảnh cho bài đăng
+                    post.setImageUrls(imageUrls);
+                    // Lấy danh sách bình luận cho bài đăng
+                    List<Comment> comments = new ArrayList<>();
+                    Cursor commentCursor = db.rawQuery("SELECT " +
+                            TABLE_USERS + "." + AVATAR_IMAGE + ", " +
+                            TABLE_COMMENTS + ".*, " +
+                            TABLE_USERS + "." + COLUMN_USERNAME + " " +
+                            "FROM " + TABLE_COMMENTS + " " +
+                            "JOIN " + TABLE_USERS + " ON " +
+                            TABLE_COMMENTS + "." + COLUMN_USER_ID + " = " +
+                            TABLE_USERS + "." + COLUMN_USER_ID + " " +
+                            "WHERE " + COLUMN_POST_ID + " = ?", new String[]{String.valueOf(postId)});
+                    while (commentCursor.moveToNext()) {
+                        String commentAvatarUrl = commentCursor.getString(commentCursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+                        String commentUsername = commentCursor.getString(commentCursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+                        String commentContent = commentCursor.getString(commentCursor.getColumnIndexOrThrow(COLUMN_COMMENT_CONTENT));
+
+                        Comment comment = new Comment(commentAvatarUrl, commentUsername, commentContent);
+                        comments.add(comment);
+                    }
+                    commentCursor.close();
+                    // Gán danh sách bình luận cho bài đăng
+                    post.setComments(comments);
+                    // Thêm đối tượng Post vào danh sách
+                    posts.add(post);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+        return posts;
+    }
+
+
     public List<Post> getAllPosts() {
         List<Post> posts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + TABLE_USERS + "." + AVATAR_IMAGE + ", " + TABLE_POSTS + ".*, " + TABLE_USERS + "." + COLUMN_USERNAME + ", " + TABLE_POSTS + "." + COLUMN_CREATED_AT + ", " + TABLE_POSTS + "." + COLUMN_POST_TITLE + "," + COLUMN_POST_CONTENT + " FROM " + TABLE_POSTS + " JOIN " + TABLE_USERS + " ON " + TABLE_POSTS + "." + COLUMN_USER_ID + " = " + TABLE_USERS + "." + COLUMN_USER_ID + " ORDER BY " + TABLE_POSTS + "." + COLUMN_CREATED_AT + " DESC", null);
+        Cursor cursor = db.rawQuery("SELECT " + TABLE_USERS + "." + AVATAR_IMAGE + ", " + TABLE_POSTS + ".*, " + TABLE_USERS + "." + COLUMN_USERNAME + ", " + TABLE_POSTS + "." + COLUMN_CREATED_AT + ", " + TABLE_POSTS + "." + COLUMN_POST_TITLE + "," + COLUMN_POST_CONTENT + ", " +
+                "CASE WHEN " + TABLE_LIKES + "." + COLUMN_USER_ID + " IS NULL THEN 0 ELSE 1 END AS isLiked " + // Kiểm tra xem người dùng đã thích bài viết chưa
+                "FROM " + TABLE_POSTS +
+                " JOIN " + TABLE_USERS + " ON " + TABLE_POSTS + "." + COLUMN_USER_ID + " = " + TABLE_USERS + "." + COLUMN_USER_ID +
+                " LEFT JOIN " + TABLE_LIKES + " ON " + TABLE_POSTS + "." + COLUMN_POST_ID + " = " + TABLE_LIKES + "." + COLUMN_POST_ID +
+                " ORDER BY " + TABLE_POSTS + "." + COLUMN_CREATED_AT + " DESC", null);
 
         try {
             if (cursor.moveToFirst()) {
@@ -434,13 +672,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED_AT));
                     String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_TITLE));
                     String content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_POST_CONTENT));
+                    int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID));
                     // Lấy ID của bài đăng
                     int postId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POST_ID));
                     int isRecipe = cursor.getInt(cursor.getColumnIndexOrThrow(IS_RECIPE));
+                    // Kiểm tra trạng thái like của bài viết
+                    boolean isLiked = cursor.getInt(cursor.getColumnIndexOrThrow("isLiked")) == 1;
 
                     List<String> imageUrls = null;
-                    Post post = new Post(postId, avatarUrl, username, date, title, content, imageUrls, isRecipe);
-                    // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng hiện tại
+                    Post post = new Post(userId, postId, avatarUrl, username, date, title, content, imageUrls, isRecipe, new ArrayList<>());
+                    post.setLiked(isLiked); // Cập nhật trạng thái like của bài viết
+
+                    // Tạo một danh sách để lưu trữ các URL hình ảnh cho bài đăng
                     imageUrls = new ArrayList<>();
 
                     // Truy vấn để lấy tất cả các URL hình ảnh từ bảng PHOTOS tương ứng với postId
@@ -454,9 +697,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                     // Gán danh sách URL hình ảnh cho bài đăng
                     post.setImageUrls(imageUrls);
+                    // Lấy danh sách bình luận cho bài đăng
+                    List<Comment> comments = new ArrayList<>();
+                    Cursor commentCursor = db.rawQuery("SELECT DISTINCT " +
+                            TABLE_USERS + "." + AVATAR_IMAGE + ", " +
+                            TABLE_COMMENTS + ".*, " +
+                            TABLE_USERS + "." + COLUMN_USERNAME + " " +
+                            "FROM " + TABLE_COMMENTS + " " +
+                            "JOIN " + TABLE_USERS + " ON " +
+                            TABLE_COMMENTS + "." + COLUMN_USER_ID + " = " +
+                            TABLE_USERS + "." + COLUMN_USER_ID + " " +
+                            "WHERE " + COLUMN_POST_ID + " = ? " + " ORDER BY " + COLUMN_CREATED_AT + " DESC", new String[]{String.valueOf(postId)});
+                    while (commentCursor.moveToNext()) {
+                        String commentAvatarUrl = commentCursor.getString(commentCursor.getColumnIndexOrThrow(AVATAR_IMAGE));
+                        String commentUsername = commentCursor.getString(commentCursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+                        String commentContent = commentCursor.getString(commentCursor.getColumnIndexOrThrow(COLUMN_COMMENT_CONTENT));
 
+                        Comment comment = new Comment(commentAvatarUrl, commentUsername, commentContent);
+                        comments.add(comment);
+                    }
+                    commentCursor.close();
+                    // Gán danh sách bình luận cho bài đăng
+                    post.setComments(comments);
                     // Thêm đối tượng Post vào danh sách
-                    posts.add(post);
+                    if (!posts.contains(post)) {
+                        posts.add(post);
+                    }
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -465,4 +731,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return posts;
     }
+
 }

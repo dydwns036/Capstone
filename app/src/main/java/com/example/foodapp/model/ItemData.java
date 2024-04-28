@@ -1,4 +1,4 @@
-package com.example.myapplication.model;
+package com.example.foodapp.model;
 // Tạo lớp ItemData.java
 public class ItemData {
     private int imageResId;
