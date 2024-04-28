@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.foodapp;
 
 import androidx.fragment.app.Fragment;
 

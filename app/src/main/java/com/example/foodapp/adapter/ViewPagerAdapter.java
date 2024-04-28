@@ -1,4 +1,4 @@
-package com.example.myapplication.adapter;
+package com.example.foodapp.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

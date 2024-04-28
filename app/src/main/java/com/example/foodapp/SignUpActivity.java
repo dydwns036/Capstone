@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.foodapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.data.DatabaseHelper;
+import com.example.foodapp.data.DatabaseHelper;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText usernameEditText,accnameEditText,passwordEditText,emailEditText,confirmPasswordEditText;
