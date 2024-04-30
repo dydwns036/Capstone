@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -37,6 +39,7 @@ public class AddPostActivity extends AppCompatActivity {
     private Button buttonSubmit;
     private User loggedInUser;
     private Spinner spinner;
+    private boolean isSpinnerOpen = false;
 
     private DatabaseHelper databaseHelper;
 
@@ -61,7 +64,28 @@ public class AddPostActivity extends AppCompatActivity {
         imageViewSelected = findViewById(R.id.imageViewSelected);
         buttonSubmit = findViewById(R.id.buttonSubmit);
         spinner = findViewById(R.id.spinner);
-
+        spinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Lúc bắt đầu chạm vào Spinner, kiểm tra và ẩn bàn phím nếu cần
+                        if (isSpinnerOpen==false) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                            editTextContent.clearFocus();
+                            editTextTitle.clearFocus();
+                            isSpinnerOpen = true;
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        // Khi nhả chạm, cập nhật trạng thái của Spinner
+                        isSpinnerOpen = false;
+                        break;
+                }
+                return false;
+            }
+        });
 
         // Thiết lập layout manager cho RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
